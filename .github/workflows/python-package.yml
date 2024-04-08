@@ -31,10 +31,9 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-    - name: Load build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifacts
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)
@@ -49,5 +48,8 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
     - name: Unittests (Pytest)
       run: pytest tests/unittests
