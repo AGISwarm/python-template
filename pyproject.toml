@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]               # REQUIRED if [build-system] table is used
+build-backend = "setuptools.build_meta" # If not defined, then legacy behavior can happen.
+
+[project]
+name = "python-template"
+authors = [{ "name" = "Denis Diachkov", "email" = "diachkov.da@gmail.com" }]
+dynamic = ["version"]
+description = "Python template project"
+readme = "README.md"
+
+requires-python = ">=3.11"
+license = { file = "LICENSE.txt" }
+keywords = ["sample", "setuptools", "development"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    'numpy', # Required for the sample project
+]
+
+
+[project.optional-dependencies]
+test = ['pytest']
+analyze = ['mypy', 'pylint', 'bandit', 'black', 'isort']
+build = ['setuptools', 'wheel', 'build']
+
+[project.urls]
+"Homepage" = "https://github.com/DenisDiachkov/python-template/"
+"Bug Reports" = "https://github.com/DenisDiachkov/python-template/issues"
+"Source" = "https://github.com/DenisDiachkov/python-template/"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+python_template = ["py.typed"]
