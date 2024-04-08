@@ -20,7 +20,7 @@ dependencies = ['numpy']
 test = ['pytest']
 analyze = ['pyright', 'pylint', 'bandit', 'black', 'isort']
 build = ['setuptools', 'wheel', 'build']
-publish = ['twine', 'http']
+publish = ['twine']
 
 [project.urls]
 "Homepage" = "https://github.com/DenisDiachkov/python-template/"
