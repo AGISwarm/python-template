@@ -23,6 +23,7 @@ jobs:
             TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
+            PYPI_PORT: ${{ secrets.PYPI_PORT }}
           run: |
             python -m build
-            twine upload --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+            twine upload --repository-url http://localhost:${{secrets.PYPI_PORT}}/ -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
