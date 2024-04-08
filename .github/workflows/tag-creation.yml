@@ -26,4 +26,4 @@ jobs:
             PYPI_PORT: ${{ secrets.PYPI_PORT }}
           run: |
             python -m build
-            twine upload --repository-url http://127.0.0.1:$PYPI_PORT/ -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+            twine upload --repository-url http://127.0.0.1:9291/ -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
