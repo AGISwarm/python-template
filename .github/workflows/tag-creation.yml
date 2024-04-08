@@ -17,7 +17,7 @@ jobs:
             pip install -e '.[build,publish]'
         - name: Update VERSION file
           run: |
-            echo ${{ github.ref }} > VERSION
+            echo "${{ github.ref }}" | cut -c 2- > VERSION
         - name: Build and publish
           env:
             TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
