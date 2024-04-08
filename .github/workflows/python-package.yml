@@ -26,6 +26,7 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+    - run: cd ${{ needs.build.outputs.workspace-path }}
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)
@@ -40,5 +41,6 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+    - run: cd ${{ needs.build.outputs.workspace-path }}
     - name: Unittests (Pytest)
       run: pytest tests/unittests
