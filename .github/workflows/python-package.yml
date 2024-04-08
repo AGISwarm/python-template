@@ -23,6 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] --no-cache-dir
   analyze:
+    needs: build
     runs-on: self-hosted
     steps:
     - name: Lint (Pylint)
@@ -36,6 +37,7 @@ jobs:
     - name: Security scan (Bandit)
       run: bandit -r src
   test:
+    needs: build
     runs-on: self-hosted
     steps:
     - name: Unittests (Pytest)
