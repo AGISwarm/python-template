@@ -24,7 +24,7 @@ dependencies = [
 ]
 [project.optional-dependencies]
 test = ['pytest']
-analyze = ['mypy', 'pylint', 'bandit', 'black', 'isort']
+analyze = ['pyright', 'pylint', 'bandit', 'black', 'isort']
 build = ['setuptools', 'wheel', 'build']
 
 [project.urls]

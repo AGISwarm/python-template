@@ -11,9 +11,7 @@ permissions:
 
 jobs:
   build:
-
     runs-on: self-hosted
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.11
@@ -24,12 +22,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] --no-cache-dir
-    - name: Flake8 lint
-      run: |
-        pylint src
-        pyright src
-    - name: Pyright        
-      uses: jakebailey/pyright-action@v2.2.1
-    - name: Test with pytest
-      run: |
-        pytest
+  analyze:
+    runs-on: self-hosted
+    steps:
+    - name: Lint (Pylint)
+      run: pylint src
+    - name: Format check (Black)
+      run: black --check src
+    - name: Format check (Isort)
+      run: isort --check src
+    - name: Type check (Pyright)
+      run: pyright src
+    - name: Security scan (Bandit)
+      run: bandit -r src
+  test:
+    runs-on: self-hosted
+    steps:
+    - name: Unittests (Pytest)
+      run: pytest tests/unittests
