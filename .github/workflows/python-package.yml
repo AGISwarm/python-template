@@ -22,11 +22,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] --no-cache-dir
-    - name: save build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifacts
-        path: src
   analyze:
     needs: build
     runs-on: self-hosted
@@ -45,7 +40,7 @@ jobs:
     - name: Security scan (Bandit)
       run: bandit -r src
   test:
-    needs: build
+    needs: analyze
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
