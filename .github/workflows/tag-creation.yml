@@ -1,0 +1,25 @@
+on:
+    push:
+        tags:
+        - 'v*'
+jobs:
+    pypi:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.x'
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -e .[build, publish]
+        - name: Build and publish
+          env:
+            TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
+            TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+            PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
+          run: |
+            python -m build
+            twine upload --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
