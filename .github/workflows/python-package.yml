@@ -22,11 +22,19 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] --no-cache-dir
+    - name: save build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: src
   analyze:
     needs: build
     runs-on: self-hosted
     steps:
-    - run: cd ${{ needs.build.outputs.workspace-path }}
+    - name: Load build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)
@@ -41,6 +49,5 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-    - run: cd ${{ needs.build.outputs.workspace-path }}
     - name: Unittests (Pytest)
       run: pytest tests/unittests
