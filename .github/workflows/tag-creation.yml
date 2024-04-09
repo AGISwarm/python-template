@@ -4,17 +4,13 @@ on:
         - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 jobs:
     pypi:
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         steps:
         - uses: actions/checkout@v2
         - name: Set up Python
           uses: actions/setup-python@v2
           with:
             python-version: '3.x'
-        - name: Test PyPI server
-          run: |
-            echo "Checking if PyPI server is running"
-            curl -s http://host.docker.internal:9291/
         - name: Update VERSION file
           run: |
             echo "${{  github.ref_name }}" | cut -c 2- > VERSION
@@ -27,7 +23,6 @@ jobs:
             TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
-            PYPI_PORT: ${{ secrets.PYPI_PORT }}
           run: |
             python -m build
-            twine upload --repository-url http://127.0.0.1:9291/ -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+            twine upload --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
