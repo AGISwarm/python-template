@@ -14,7 +14,7 @@ jobs:
         - name: Test PyPI server
           run: |
             echo "Checking if PyPI server is running"
-            curl -s http://localhost:9291/
+            curl -s http://host.docker.internal:9291/
         - name: Update VERSION file
           run: |
             echo "${{  github.ref_name }}" | cut -c 2- > VERSION
