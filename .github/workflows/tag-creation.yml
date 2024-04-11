@@ -23,12 +23,16 @@ jobs:
             TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
-            DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
-            PIP_CONF: ${{ secrets.PIP_CONF_PATH }}
           run: |
             python -m build
             twine upload --verbose --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+    docker:
+        runs-on: self-hosted
+        steps:
         - name: Build docker image
+          env:
+            DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+            PIP_CONF: ${{ secrets.PIP_CONF_PATH }}
           run: |
             docker build -t ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION) \
              --progress=plain \
