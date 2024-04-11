@@ -30,6 +30,7 @@ jobs:
         needs: pypi
         runs-on: self-hosted
         steps:
+        - uses: actions/checkout@v2
         - name: Build docker image
           env:
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
