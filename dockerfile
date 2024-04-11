@@ -9,6 +9,4 @@ RUN --mount=type=secret,id=PIP_CONF,target=/etc/pip.conf \
     python -m pip install /dist/*.whl --no-cache-dir
 
 RUN echo $(ls /dist/*.whl | sed 's/.*\///' | sed 's/-.*//') > /PACKAGE_NAME
-RUN rm -rf /dist
-
 ENTRYPOINT  python -m $(cat /PACKAGE_NAME)

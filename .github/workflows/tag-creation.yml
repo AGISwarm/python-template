@@ -26,11 +26,21 @@ jobs:
           run: |
             python -m build
             twine upload --verbose --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+        - name: Upload dist as artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: dist
+            path: dist
     docker:
         needs: pypi
         runs-on: self-hosted
         steps:
         - uses: actions/checkout@v2
+        - name: Download dist artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: dist
+            path: dist
         - name: Build docker image
           env:
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
