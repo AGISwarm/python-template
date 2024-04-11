@@ -24,6 +24,7 @@ jobs:
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+            PIP_CONF: ${{ secrets.PIP_CONF_PATH }}
           run: |
             python -m build
             twine upload --verbose --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
@@ -31,7 +32,7 @@ jobs:
           run: |
             docker build -t ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION) \
              --progress=plain \
-             --secret id=PIP_CONF,src=$HOME/.pip/pip.conf \
+             --secret id=PIP_CONF,src=${{ secrets.PIP_CONF_PATH }} \
              --network=host \
              --no-cache \
              .
