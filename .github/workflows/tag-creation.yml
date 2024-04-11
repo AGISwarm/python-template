@@ -23,6 +23,22 @@ jobs:
             TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
+            DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
           run: |
             python -m build
-            twine upload --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+            twine upload --verbose --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+        - name: Build docker image
+          run: |
+            docker build -t ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION) \
+             --progress=plain \
+             --secret id=PIP_CONF,src=$HOME/.pip/pip.conf 
+             --network=host 
+             --no-cache 
+             .
+        - name: Push docker image
+          run: |
+            docker push ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION)
+        - name: Delete docker image
+          run: |
+            docker rmi ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION)
+        
