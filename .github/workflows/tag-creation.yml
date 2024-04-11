@@ -27,6 +27,7 @@ jobs:
             python -m build
             twine upload --verbose --repository-url $PIP_INDEX_EXTRA_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
     docker:
+        needs: pypi
         runs-on: self-hosted
         steps:
         - name: Build docker image
