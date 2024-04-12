@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: self-hosted
@@ -24,12 +28,9 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+    - uses: actions/checkout@v3
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
-    - name: Checkout environment from previous job
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ needs.build.outputs.ref }}
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)
