@@ -19,14 +19,17 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -e .[test,analyze] --no-cache-dir
+        python -m pip install -e .[test,analyze] --no-cache-dir        
   analyze:
     needs: build
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
+    - name: Checkout environment from previous job
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ needs.build.outputs.ref }}
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)

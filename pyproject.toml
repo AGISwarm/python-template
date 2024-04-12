@@ -18,7 +18,7 @@ classifiers = [
 dependencies = ['numpy']
 [project.optional-dependencies]
 test = ['pytest']
-analyze = ['pyright==1.1.352', 'pylint', 'bandit', 'black', 'isort']
+analyze = ['pyright', 'pylint', 'bandit', 'black', 'isort']
 build = ['setuptools', 'wheel', 'build']
 publish = ['twine']
 
