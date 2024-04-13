@@ -18,9 +18,11 @@ jobs:
       with:
         python-version: "3.11"
     - name: Install dependencies
+      env:
+        PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -e .[test,analyze] --no-cache-dir        
+        python -m pip install -e .[test,analyze] --no-cache-dir --extra-index-url $PIP_INDEX_EXTRA_URL --trusted-host pypi-server      
     - name: Lint (Pylint)
       run: pylint src
     - name: Format check (Black)

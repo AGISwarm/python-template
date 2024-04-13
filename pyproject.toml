@@ -15,7 +15,7 @@ keywords = ["sample", "setuptools", "development"]
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
-dependencies = ['numpy']
+dependencies = ['numpy', 'python-template==3.2.8']
 [project.optional-dependencies]
 test = ['pytest']
 analyze = ['pyright', 'pylint', 'bandit', 'black', 'isort']
