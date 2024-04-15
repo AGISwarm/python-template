@@ -57,6 +57,7 @@ jobs:
              --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL \
              --progress=plain \
              --no-cache \
+             --network=host \
              .
         - name: Push docker image
           run: |
