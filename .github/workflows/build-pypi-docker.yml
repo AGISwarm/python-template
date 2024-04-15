@@ -21,7 +21,7 @@ jobs:
             pip install -e '.[build,publish]'
         - name: Build and publish
           env:
-            TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
+            TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
             TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_INDEX_EXTRA_URL }}
           run: |
