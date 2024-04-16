@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "python-template"
+name = "AGISwarm.python-template"
 authors = [{ "name" = "Denis Diachkov", "email" = "diachkov.da@gmail.com" }]
 dynamic = ["version"]
 description = "Python template project"
