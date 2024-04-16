@@ -59,6 +59,7 @@ jobs:
              --progress=plain \
              --no-cache \
              --network=host \
+             --add-host $PIP_INDEX_EXTRA_URL_REMAINDER:$(dig +short $PIP_INDEX_EXTRA_URL_REMAINDER) \
              .
         - name: Push docker image
           run: |
