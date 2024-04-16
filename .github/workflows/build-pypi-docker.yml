@@ -52,9 +52,10 @@ jobs:
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
             PIP_INDEX_EXTRA_URL_REMAINDER: ${{ secrets.PIP_INDEX_EXTRA_URL_REMAINDER }}
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_PROTOCOL }}://${{ secrets.PIP_USERNAME }}:${{ secrets.PIP_PASSWORD }}@${{ secrets.PIP_INDEX_EXTRA_URL_REMAINDER }}
+            PACKAGE_NAME: $(ls dist | grep .tar.gz | cut -d '-' -f 1)  
           run: |
             echo $PIP_INDEX_EXTRA_URL > /FILE && \
-            docker build -t ${{ secrets.DOCKER_HUB_URL }}/${{ github.event.repository.name }}:$(cat VERSION) \
+            docker build -t $DOCKER_HUB_URL/$PACKAGE_NAME:$(cat VERSION) \
              --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL \
              --progress=plain \
              --no-cache \
@@ -64,8 +65,9 @@ jobs:
         - name: Push docker image and cleanup
           env:
             PACKAGE_NAME: $(ls dist | grep .tar.gz | cut -d '-' -f 1)
-            CONTAINER_URL: ${{ secrets.DOCKER_HUB_URL }}/$PACKAGE_NAME:$(cat VERSION)
+            DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+            VERSION: $(cat VERSION)
           run: |
-            docker push $CONTAINER_URL
-            docker rmi $CONTAINER_URL
+            docker push $DOCKER_HUB_URL/$PACKAGE_NAME:$VERSION
+            docker rmi $DOCKER_HUB_URL/$PACKAGE_NAME:$VERSION
         
