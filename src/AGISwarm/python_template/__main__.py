@@ -1,13 +1,12 @@
 """Main.py"""
 
 import numpy
+from . import __version__
 
 
 def main():
     """Main function"""
-    print(numpy.__version__)
-    array = numpy.array([1, 2, 3])
-    print(array)
+    print(__version__)
 
 
 if __name__ == "__main__":
