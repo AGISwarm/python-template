@@ -51,7 +51,6 @@ jobs:
     needs: setup
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
     - name: Unittests (Pytest)
