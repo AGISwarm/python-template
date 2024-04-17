@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  build-analysis-test:
+  setup:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
@@ -24,20 +24,30 @@ jobs:
         PIP_PASSWORD: ${{ secrets.PIP_PASSWORD }}
         PIP_PROTOCOL: ${{ vars.PIP_PROTOCOL }}
       run: |
+        python -m venv .venv
+        source .venv/bin/activate
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] \
             --no-cache-dir \
             --extra-index-url $PIP_PROTOCOL://$PIP_USERNAME:$PIP_PASSWORD@$PIP_INDEX_EXTRA_URL_REMAINDER \
             --trusted-host $PIP_INDEX_EXTRA_URL_REMAINDER
+  analysis:
+    needs: setup
+    runs-on: self-hosted
+    steps:
     - name: Lint (Pylint)
-      run: pylint src
+      run: source .venv/bin/activate && pylint src
     - name: Format check (Black)
-      run: black --check src
+      run: source .venv/bin/activate && black --check src
     - name: Format check (Isort)
-      run: isort --check src
+      run: source .venv/bin/activate && isort --check src
     - name: Type check (Pyright)
-      run: pyright src
+      run: source .venv/bin/activate && pyright src
     - name: Security scan (Bandit)
-      run: bandit -r src
+      run: source .venv/bin/activate && bandit -r src
+  unittests:
+    needs: setup
+    runs-on: self-hosted
+    steps:
     - name: Unittests (Pytest)
-      run: pytest tests/unittests
+      run: source .venv/bin/activate && pytest tests/unittests
