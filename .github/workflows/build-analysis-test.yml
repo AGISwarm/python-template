@@ -25,7 +25,7 @@ jobs:
         PIP_PROTOCOL: ${{ vars.PIP_PROTOCOL }}
       run: |
         python -m venv .venv
-        source .venv/bin/activate
+        source .venv/bin/activate 
         python -m pip install --upgrade pip
         python -m pip install -e .[test,analyze] \
             --no-cache-dir \
@@ -35,7 +35,6 @@ jobs:
     needs: setup
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
     - name: Lint (Pylint)
