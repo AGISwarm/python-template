@@ -48,7 +48,7 @@ jobs:
     - name: Security scan (Bandit)
       run: source .venv/bin/activate && bandit -r src
   unittests:
-    needs: setup
+    needs: analysis
     runs-on: self-hosted
     steps:
     - name: Set up Python 3.11
