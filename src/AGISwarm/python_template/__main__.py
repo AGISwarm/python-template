@@ -1,6 +1,5 @@
 """Main.py"""
 
-import numpy
 from . import __version__
 
 
