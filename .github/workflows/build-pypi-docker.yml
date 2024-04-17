@@ -48,7 +48,7 @@ jobs:
         - name: Update VERSION file
           run: echo "${{  github.ref_name }}" | cut -c 2- > VERSION
         - name: Save package name
-          run: echo $(ls dist | grep .tar.gz | cut -d '-' -f 1) > PACKAGE_NAME
+          run: echo $(ls dist | grep .tar.gz | cut -d '-' -f 1) > DOCKER_CONTAINER_NAME
         - name: Build docker image
           env:
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
@@ -56,7 +56,7 @@ jobs:
             PIP_INDEX_EXTRA_URL: ${{ secrets.PIP_PROTOCOL }}://${{ secrets.PIP_USERNAME }}:${{ secrets.PIP_PASSWORD }}@${{ secrets.PIP_INDEX_EXTRA_URL_REMAINDER }}  
           run: |
             echo $PIP_INDEX_EXTRA_URL > /FILE && \
-            docker build -t $DOCKER_HUB_URL/$(cat PACKAGE_NAME):$(cat VERSION) \
+            docker build -t $DOCKER_HUB_URL/$(cat DOCKER_CONTAINER_NAME):$(cat VERSION) \
              --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL \
              --progress=plain \
              --no-cache \
@@ -66,7 +66,10 @@ jobs:
         - name: Push docker image and cleanup
           env:
             DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+            DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+            DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           run: |
-            docker push $DOCKER_HUB_URL/$(cat PACKAGE_NAME):$(cat VERSION)
-            docker rmi $DOCKER_HUB_URL/$(cat PACKAGE_NAME):$(cat VERSION)
+            echo $DOCKER_HUB_USERNAME:$DOCKER_HUB_PASSWORD | docker login $DOCKER_HUB_URL -u $DOCKER_HUB_USERNAME --password-stdin
+            docker push $DOCKER_HUB_URL/$(cat DOCKER_CONTAINER_NAME):$(cat VERSION)
+            docker rmi $DOCKER_HUB_URL/$(cat DOCKER_CONTAINER_NAME):$(cat VERSION)
         
