@@ -69,7 +69,7 @@ jobs:
             DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
             DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           run: |
-            echo $DOCKER_HUB_USERNAME:$DOCKER_HUB_PASSWORD | docker login $DOCKER_HUB_URL -u $DOCKER_HUB_USERNAME --password-stdin
+            echo $DOCKER_HUB_PASSWORD | docker login $DOCKER_HUB_URL -u $DOCKER_HUB_USERNAME --password-stdin
             docker push $DOCKER_HUB_URL/$(cat DOCKER_CONTAINER_NAME):$(cat VERSION)
             docker rmi $DOCKER_HUB_URL/$(cat DOCKER_CONTAINER_NAME):$(cat VERSION)
         
