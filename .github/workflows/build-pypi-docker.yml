@@ -18,7 +18,7 @@ jobs:
         - name: Install dependencies
           run: |
             python -m pip install --upgrade pip
-            pip install -e '.[build,publish]'  
+            pip install -e '.[build,publish]'
         - name: Build and publish
           env:
             PIP_USERNAME: ${{ secrets.PIP_USERNAME }}
@@ -30,23 +30,10 @@ jobs:
             twine upload --verbose \
               --repository-url $PIP_PROTOCOL://$PIP_INDEX_EXTRA_URL_REMAINDER \
               -u $PIP_USERNAME -p $PIP_PASSWORD dist/*
-        - name: Upload dist
-          uses: actions/upload-artifact@v2
-          with:
-            name: dist
-            path: dist
     docker:
         needs: pypi
         runs-on: self-hosted
         steps:
-        - uses: actions/checkout@v2
-        - name: Download dist
-          uses: actions/download-artifact@v2
-          with:
-            name: dist
-            path: dist
-        - name: Update VERSION file
-          run: echo "${{  github.ref_name }}" | cut -c 2- > VERSION
         - name: Save package name
           run: echo $(ls dist | grep .tar.gz | cut -d '-' -f 1) > DOCKER_CONTAINER_NAME
         - name: Build docker image
