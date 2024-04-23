@@ -53,27 +53,33 @@ For testing and deployment in a CI/CD setup, refer to our [CICD project](https:/
 
 ### Usage
 
+#### Command Line
+
 ```bash
-python -m AGISwarm.python_template
+python -m <namespace>.<project-name>
 ```
 
-### Docker
+#### Docker
 
 1. Build python package:
    ```bash
    python -m build
    ```
-2. Create PIP_INDEX_EXTRA_URL environment variable to be able to install dependencies from a self-hosted PyPI server:
+2. Create PIP_INDEX_EXTRA_URL environment variable to be able to install dependencies from a self-hosted PyPI server.
+
+   Given URL is self-hosted PyPI server from [CICD](README.md#cicd-setup) setup. 
+   Replace with your own if needed. 
+   Or remove secret mounting in Dockerfile, if no need. 
    ```bash
-   export PIP_INDEX_EXTRA_URL=http://pypi-server/  # Self-hosted PyPI server URL from [CICD](README.md#cicd-setup) setup. Replace with your own if needed. Or remove secret mounting in Dockerfile, if no need. 
+   export PIP_INDEX_EXTRA_URL=http://pypi-server/
    ```
 3. Build Docker image. Use this command for testing purposes only. If you use [CICD](README.md#cicd-setup) setup, it will build and push the image for you after creating a tag in your repository:
    ```bash
-   docker build -t python-template --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL .
+   docker build -t <your tag name> --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL .
    ```
 4. Run Docker container:
    ```bash
-   docker run python-template
+   docker run <your tag name>
    ```
 
 
