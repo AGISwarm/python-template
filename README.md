@@ -23,26 +23,33 @@ This repository provides a Python project template optimized for development, te
 
 ## Getting Started
 
-### Prerequisites
-
-- Python 3.11+
-- Docker
-- Git
-
 ### Installation
 
-1. Clone the repository:
+1. Import the template repository to your GitHub account.
+
+2. Clone the repository:
    ```bash
-   git clone https://github.com/AGISwarm/python-template.git
+   git clone <repository-url>
    ```
-2. Navigate to the project directory:
+3. Navigate to the project directory:
    ```bash
-   cd python-template
+   cd <repository-name>
    ```
-3. Install dependencies:
+4. Adapt the project to your needs:
+   1. Modify the project name in `pyproject.toml` and `src/AGISwarm/python_template/__init__.py` to match your project name.
+   2. Change namespace `AGISwarm` to your own namespace.
+   3. Add your code to `src/<namespace>/<project-name>/` folder.
+   4. Write your tests in `tests/` folder.
+      1. Unittests will be run automatically by GitHub Actions every time you push to the repository. Functional tests will be not.
+   
+5. Install dependencies:
    ```bash
    pip install .
    ```
+
+### CICD Setup
+
+For testing and deployment in a CI/CD setup, refer to our [CICD project](https://github.com/AGISwarm/CICD).
 
 ### Usage
 
@@ -50,7 +57,25 @@ This repository provides a Python project template optimized for development, te
 python -m AGISwarm.python_template
 ```
 
-For testing and deployment in a CI/CD setup, refer to our [CICD project](https://github.com/AGISwarm/CICD).
+### Docker
+
+1. Build python package:
+   ```bash
+   python -m build
+   ```
+2. Create PIP_INDEX_EXTRA_URL environment variable to be able to install dependencies from a self-hosted PyPI server:
+   ```bash
+   export PIP_INDEX_EXTRA_URL=http://pypi-server/  # Self-hosted PyPI server URL from [CICD](README.md#cicd-setup) setup. Replace with your own if needed. Or remove secret mounting in Dockerfile, if no need. 
+   ```
+3. Build Docker image. Use this command for testing purposes only. If you use [CICD](README.md#cicd-setup) setup, it will build and push the image for you after creating a tag in your repository:
+   ```bash
+   docker build -t python-template --secret id=PIP_INDEX_EXTRA_URL,env=PIP_INDEX_EXTRA_URL .
+   ```
+4. Run Docker container:
+   ```bash
+   docker run python-template
+   ```
+
 
 ## License
 

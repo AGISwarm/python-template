@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AGISwarm.python-template"
-authors = [{ "name" = "Denis Diachkov", "email" = "diachkov.da@gmail.com" }]
 dynamic = ["version"]
 description = "Python template project"
 readme = "README.md"
@@ -21,11 +20,6 @@ test = ['pytest']
 analyze = ['pyright', 'pylint', 'bandit', 'black', 'isort']
 build = ['setuptools', 'wheel', 'build']
 publish = ['twine']
-
-[project.urls]
-"Homepage" = "https://github.com/DenisDiachkov/python-template/"
-"Bug Reports" = "https://github.com/DenisDiachkov/python-template/issues"
-"Source" = "https://github.com/DenisDiachkov/python-template/"
 
 
 [tool.setuptools.dynamic]
